@@ -7,6 +7,11 @@ const { NODE_ENV } = require('./config');
 
 const app = express();
 
+const fish = require('./store');
+const getRandomFish = () => {
+  return fish[Math.floor(Math.random() * fish.length)];
+};
+
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
   : 'common';
@@ -16,7 +21,7 @@ app.use(helmet());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
+  res.send(getRandomFish());
 });
 
 app.use((error, req, res, next) => {
@@ -29,5 +34,6 @@ app.use((error, req, res, next) => {
   }
   res.status(500).json(response);
 });
+
 
 module.exports = app;
